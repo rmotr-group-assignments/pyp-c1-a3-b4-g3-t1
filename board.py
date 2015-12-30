@@ -2,8 +2,8 @@
 WIDTH = 3
 PADDING = WIDTH - 1
 PADDED_WIDTH = WIDTH + 2 * PADDING
+COL_MAP = {'A': 0, 'B': 1, 'C': 2}
 
-COL_MAP = {'A':0, 'B':1, 'C':2}
 
 class Board:
     def __init__(self):
@@ -18,8 +18,8 @@ class Board:
     def valid_input(self, row, col):
         """ Returns True if row and col are valid values"""
         return ((row, col) not in self.marks and
-               row <= WIDTH and row > 0 and
-               col in COL_MAP)
+                row <= WIDTH and row > 0 and
+                col in COL_MAP)
 
     def mark(self, row, col, piece):
         """
@@ -42,38 +42,42 @@ class Board:
         """Place the piece at the zero indexed row and column"""
         self.board[row + PADDING][col + PADDING] = piece
 
-    def has_win(self, r, c, piece):
+    def has_win(self, r, c, mark):
         """
-        Check if the last piece added at (r,c) creates a winning state
+        Check if the last mark added at (r,c) creates a winning state
         """
         row = r - 1
         col = COL_MAP[c]
         cnt = 0
+        board_range = xrange(-1 * PADDING, PADDING + 1)
 
         # check vertical
-        for dr in range(-1 * PADDING, PADDING):
-            cnt = cnt + 1 if self.piece_at(row + dr, col) == piece else cnt
+        for dr in board_range:
+            cnt = cnt + 1 if self.piece_at(row + dr, col) == mark else cnt
         if cnt == WIDTH:
             return True
         else:
             cnt = 0
+
         # check horizontal
-        for dc in range(-1 * PADDING, PADDING):
-            cnt = cnt + 1 if self.piece_at(row, col + dc) == piece else cnt
+        for dc in board_range:
+            cnt = cnt + 1 if self.piece_at(row, col + dc) == mark else cnt
         if cnt == WIDTH:
             return True
         else:
             cnt = 0
+
         # check diagonal rightdown
-        for drc in range(-1 * PADDING, PADDING):
-            cnt = cnt + 1 if self.piece_at(row + drc, col + drc) == piece else cnt
+        for dd in board_range:
+            cnt = cnt + 1 if self.piece_at(row + dd, col + dd) == mark else cnt
         if cnt == WIDTH:
             return True
         else:
             cnt = 0
+
         # check diagonal rightup
-        for drc in range(-1 * PADDING, PADDING):
-            cnt = cnt + 1 if self.piece_at(row - drc, col + drc) == piece else cnt
+        for dd in board_range:
+            cnt = cnt + 1 if self.piece_at(row - dd, col + dd) == mark else cnt
         if cnt == WIDTH:
             return True
 
