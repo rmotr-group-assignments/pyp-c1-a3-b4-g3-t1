@@ -2,19 +2,22 @@ from board import Board
 from player import Player
 
 def intro():
+    """Display the intro message"""
     print "Welcome to tic tac toe"
     print "Each player will have a turn to place their mark in one"
     print "of the empty spaces on the board"
     print "\nLet the game begin!\n"
 
 def game():
+    """Play a new game"""
     player_1 = Player(name=raw_input("Player 1 enter your name: "), mark="X")
     player_2 = Player(name=raw_input("Player 2 enter your name: "), mark="O")
     players = (player_1, player_2)
     p = 0
     board = Board()
+    # game loop
     while not board.tie_exists():
-        # business logic. have each player take their turn switching back and forth
+        # Have each player take their turn switching back and forth
         try:
             current_player = players[p % 2]
             print "It is your turn {player}!".format(player=current_player.name)

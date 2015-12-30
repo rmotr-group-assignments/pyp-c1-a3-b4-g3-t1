@@ -1,3 +1,4 @@
+# BOARD CONSTANTS
 WIDTH = 3
 PADDING = WIDTH - 1
 PADDED_WIDTH = WIDTH + 2 * PADDING
@@ -15,9 +16,7 @@ class Board:
         self.marks = set()
 
     def valid_input(self, row, col):
-        """
-        Returns True if row and col are valid values
-        """
+        """ Returns True if row and col are valid values"""
         return ((row, col) not in self.marks and
                row <= WIDTH and row > 0 and
                col in COL_MAP)
@@ -26,10 +25,8 @@ class Board:
         """
         Place a piece on the board at position ROW-COL
 
-        raises a value error if row or column is invalid
+        raises a ValueError if row or column is invalid
         """
-
-        # check if already place in board
         if self.valid_input(row, col):
             self.marks.add((row, col))
             self.place_at(row - 1, COL_MAP[col], piece)
@@ -38,26 +35,17 @@ class Board:
                              .format(row, col))
 
     def piece_at(self, row, col):
-        """
-        Get the piece at the zero indexed row and column
-        """
-
-        # account for the padding around the board
+        """Get the piece at the zero indexed row and column"""
         return self.board[row + PADDING][col + PADDING]
 
     def place_at(self, row, col, piece):
-        """
-        Place the piece at the zero indexed row and column
-        """
-
+        """Place the piece at the zero indexed row and column"""
         self.board[row + PADDING][col + PADDING] = piece
 
     def has_win(self, r, c, piece):
         """
         Check if the last piece added at (r,c) creates a winning state
         """
-
-        # updated piece
         row = r - 1
         col = COL_MAP[c]
         cnt = 0
@@ -92,6 +80,7 @@ class Board:
         return False
 
     def show(self):
+        """Print the board"""
         print "  A B C"
         for row in xrange(0, WIDTH):
             print "{} {}|{}|{}".format(row + 1, self.piece_at(row, 0),
@@ -99,4 +88,5 @@ class Board:
                                        self.piece_at(row, 2))
 
     def tie_exists(self):
+        """Returns true if a tie exists on this board"""
         return len(self.marks) == 9
